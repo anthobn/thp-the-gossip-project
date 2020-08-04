@@ -1,0 +1,30 @@
+<main class="container">
+  <h1 class="text-center font-weight-bold text-danger">Consultation Fiche Potin</h1>
+  <hr>
+  <h3 class="text-center font-italic">Retrouvez sur cette page le détail du potin n°<%= @gossip.id %></h3>
+  
+  <table class="table table-bordered mt-5">
+  <thead class="text-center">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Titre</th>
+      <th scope="col">Contenu</th>
+      <th scope="col">Date de création</th>
+      <th scope="col">Date de modification</th>
+      <th scope="col">Consultation auteur</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" class="text-center"><%= @gossip.id %></th>
+      <td><%= @gossip.title %></td>
+      <td class="text-justify"><%= @gossip.content %></td>
+      <td class="text-center"><%= @gossip.created_at.to_s %></td>
+      <td class="text-center"><%= @gossip.updated_at.to_s %></td>
+      <td class="text-center"><a href="/users/<%= @gossip.user_id %>" class="btn btn-primary">Voir le profil utilisateur</a></td>
+    </tr>
+  </tbody>
+  </table>
+
+  <%= image_tag "taz.jpg", alt: "Taz tout content", class: "img-fluid mx-auto d-block mt-5" %>
+</main>

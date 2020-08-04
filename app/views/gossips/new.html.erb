@@ -1,0 +1,36 @@
+<div class="container">
+  <h1 class="text-center font-weight-bold text-danger">Enregistrement d'un potin</h1>
+  <hr>
+  <h5 class="text-center font-italic">Cette page vous permet d'enregistrer un nouveau potin...</h5>
+</div>
+
+<% if @gossip && @gossip.errors.any? %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 font-italic font-weight-bold mb-3">Les erreurs suivantes se sont produites :</p>
+      <ul>
+        <% @gossip.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div class="container mt-5">
+  <%= form_tag url_for(action: 'create'), method: "post" do %>
+
+    <div class="form-group">
+      <%= label_tag 'Titre'%>
+      <%= text_field_tag 'title', "", class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'Message' %>
+      <%= text_area_tag 'content', "", class: "form-control" %>
+    </div>
+
+    <%= submit_tag "Soumettre le potin", class: "btn btn-primary" %>
+
+  <% end %>
+</div>

@@ -1,0 +1,28 @@
+<main class="container">
+  <h1 class="text-center font-weight-bold text-danger">Consultation Fiche Utilisateur</h1>
+  <hr>
+  <h3 class="text-center font-italic">Retrouvez sur cette page le détail de l'utilisateur n°<%= @user.id %></h3>
+  
+  <table class="table table-bordered mt-5">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Prénom</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Adresse EMAIL</th>
+      <th scope="col">Date de création</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row"><%= @user.id %></th>
+      <td><%= @user.first_name %></td>
+      <td><%= @user.family_name %></td>
+      <td><%= @user.mail %></td>
+      <td><%= @user.created_at %></td>
+    </tr>
+  </tbody>
+  </table>
+
+  <%= image_tag "taz.jpg", alt: "Taz tout content", class: "img-fluid mx-auto d-block mt-5" %>
+</main>
