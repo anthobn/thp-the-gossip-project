@@ -1,4 +1,7 @@
 class GossipsController < ApplicationController
+
+  before_action :authenticate_user, only: [:create, :new]
+
   def show
     @gossip = Gossip.find(params[:id])
     @comment = Comment.new
@@ -44,6 +47,12 @@ class GossipsController < ApplicationController
 
   def post_params
     return params.require(:gossip).permit(:title, :content)
+  end
+
+  def authenticate_user
+    unless current_user
+      redirect_to new_session_path(err: 'notLogged')
+    end
   end
 
 end

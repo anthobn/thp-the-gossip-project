@@ -1,0 +1,66 @@
+<div class="container">
+  <h1 class="text-center font-weight-bold text-danger">Création d'un compte utilisateur</h1>
+  <hr>
+  <h5 class="text-center font-italic">Cette page vous permet de vous inscrire en tant que nouvel utilisateur</h5>
+</div>
+
+<% if @user && @user.errors.any? %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 font-italic font-weight-bold mb-3">Les erreurs suivantes se sont produites :</p>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div class="container mt-5">
+  <%= form_for @user do |f| %>
+
+    <div class="form-group">
+      <label>Votre Prénom :</label>
+      <%= f.text_field :first_name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Votre Nom :</label>
+      <%= f.text_field :family_name, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Votre adresse Email :</label>
+      <%= f.text_field :mail, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Votre ville :</label>
+      <%= f.select :city_id, options_for_select(@cities), {}, { :class => 'form-control' } %>
+    </div>
+
+    <div class="form-group">
+      <label>Une petite description de vous :</label>
+      <%= f.text_area :description, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Votre age :</label>
+      <%= f.text_field :age, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Votre mot de passe :</label>
+      <%= f.password_field :password, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Confirmez votre mot de passe :</label>
+      <%= f.password_field :password_confirmation, class: "form-control" %>
+    </div>
+
+    <button type="submit" class="btn btn-primary">S'inscrire</button>
+
+  <% end %>
+</div>

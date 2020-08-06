@@ -1,0 +1,46 @@
+<div class="container">
+  <h1 class="text-center font-weight-bold text-danger">Authentification utilisateur</h1>
+  <hr>
+  <h5 class="text-center font-italic">Cette page vous permet de vous authentifier</h5>
+</div>
+
+<% if @user && @user.errors.any? %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 font-italic font-weight-bold mb-3">Les erreurs suivantes se sont produites :</p>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['err'] && request.params['err'] = 'notLogged' %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 text-center font-weight-bold">Vous devez être connecté pour effectuer cette action</p>
+    </div>
+  </div>
+<% end %>
+
+<div class="container mt-5">
+
+
+<%= form_tag url_for(action: 'create'), method: "post" do %>
+
+    <div class="form-group">
+      <%= label_tag 'Email :'%>
+      <%= text_field_tag 'mail', params['mail'], class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= label_tag 'Mot de passe :' %>
+      <%= password_field_tag 'password', params['password'], class: "form-control" %>
+    </div>
+
+    <%= submit_tag "Se connecter", class: "btn btn-primary" %>
+
+  <% end %>
+</div>

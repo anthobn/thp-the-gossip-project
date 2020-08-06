@@ -28,6 +28,30 @@
   </div>
 <% end %>
 
+<% if request.params['userRegistered'] && request.params['userRegistered'] = true %>
+  <div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre compte a été crée avec succès !</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['connect'] && request.params['connect'] = true %>
+  <div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+      <p class="h5 text-center font-weight-bold">Vous êtes bien connecté !</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['disconnect'] && request.params['disconnect'] = true %>
+  <div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+      <p class="h5 text-center font-weight-bold">Vous êtes bien déconnecté !</p>
+    </div>
+  </div>
+<% end %>
+
 <main class="container mt-5">
   <div class="card-columns">
     <% @all_gossips.each do |gossip| %>
