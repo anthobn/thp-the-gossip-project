@@ -22,12 +22,12 @@
 
     <div class="form-group">
       <%= label_tag 'Titre'%>
-      <%= text_field_tag 'title', "", class: "form-control" %>
+      <%= text_field_tag 'title', params['title'], class: "form-control" %>
     </div>
 
     <div class="form-group">
       <%= label_tag 'Message' %>
-      <%= text_area_tag 'content', "", class: "form-control" %>
+      <%= text_area_tag 'content', params['content'], class: "form-control" %>
     </div>
 
     <%= submit_tag "Soumettre le potin", class: "btn btn-primary" %>

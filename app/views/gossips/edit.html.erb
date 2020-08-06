@@ -1,0 +1,36 @@
+<div class="container">
+  <h1 class="text-center font-weight-bold text-danger">Édition d'un potin</h1>
+  <hr>
+  <h5 class="text-center font-italic">Cette page vous permet d'éditer le potin <%= @gossip.id %></h5>
+</div>
+
+<% if @gossip.errors.any? %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 font-italic font-weight-bold mb-3">Les erreurs suivantes se sont produites :</p>
+      <ul>
+        <% @gossip.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div class="container mt-5">
+  <%= form_for @gossip do |f| %>
+
+    <div class="form-group">
+      <label>Titre du potin :</label>
+      <%= f.text_field :title, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <label>Contenu du potin :</label>
+      <%= f.text_area :content, class: "form-control" %>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+
+  <% end %>
+</div>

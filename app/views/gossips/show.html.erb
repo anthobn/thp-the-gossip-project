@@ -2,6 +2,22 @@
   <h1 class="text-center font-weight-bold text-danger">Consultation Fiche Potin</h1>
   <hr>
   <h3 class="text-center font-italic">Retrouvez sur cette page le détail du potin n°<%= @gossip.id %></h3>
+
+<% if request.params['commentUpdated'] && request.params['commentUpdated'] = true %>
+  <div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre commentaire a été mis à jour avec succès !</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['commentDestroyed'] && request.params['commentDestroyed'] = true %>
+  <div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre commentaire a été supprimé avec succès !</p>
+    </div>
+  </div>
+<% end %>
   
   <table class="table table-bordered mt-5">
   <thead class="text-center">
@@ -11,7 +27,10 @@
       <th scope="col">Contenu</th>
       <th scope="col">Date de création</th>
       <th scope="col">Date de modification</th>
+      <th scope="col">Ville de l'auteur</th>
       <th scope="col">Consultation auteur</th>
+      <th scope="col">Modification</th>
+      <th scope="col">Suppression</th>
     </tr>
   </thead>
   <tbody>
@@ -21,10 +40,50 @@
       <td class="text-justify"><%= @gossip.content %></td>
       <td class="text-center"><%= @gossip.created_at.to_s %></td>
       <td class="text-center"><%= @gossip.updated_at.to_s %></td>
-      <td class="text-center"><a href="/users/<%= @gossip.user_id %>" class="btn btn-primary">Voir le profil utilisateur</a></td>
+      <td class="text-center"><a href="<%= city_path(@gossip.user.city.id) %>"><%= @gossip.user.city.name %></a></td>
+      <td class="text-center"><a href="<%= user_path(@gossip.user_id) %>" class="btn btn-primary">Voir le profil utilisateur</a></td>
+      <td class="text-center"><a href="<%= edit_gossip_path %>" class="btn btn-primary">Modifier</a></td>
+      <td class="text-center"><a href="<%= gossip_path %>" class="btn btn-danger" data-confirm="Etes-vous sur de vouloir supprimer ce potin ?" data-method="DELETE">Supprimer</a></td>
     </tr>
   </tbody>
   </table>
+
+  <div class="list-group mt-5 mb-5">
+    <% i = 0 %>
+    <% @gossip.comments.each do |comment| %>
+      
+      <div class="list-group-item list-group-item-action <%= 'active' if i%2==0 %>">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1"><%= comment.user.first_name %> a commenté :</h5>
+          <small><%= comment.created_at %></small>
+        </div>
+        <p class="mb-1"><%= comment.content %></p>
+        <div class="d-flex justify-content-between">
+          <div>
+            <small>Redigé par : <%= comment.user.first_name %></small>
+          </div>
+          <div>
+            <a href="<%= edit_comment_path(comment.id) %>" class="btn btn-warning">Modifier</a>
+            <a href="<%= comment_path(comment.id) %>" class="btn btn-danger" data-confirm="Etes-vous sur de vouloir supprimer ce commentaire ?" data-method="DELETE">Supprimer</a>
+          </div>
+        </div>
+      </div>
+
+      <%i += 1%>
+
+    <% end %>
+  </div>
+
+  <%= form_for @comment do |f| %>
+
+    <div class="form-group">
+      <label>Rédiger un commentaire :</label>
+      <%= f.text_area :content, class: "form-control" %>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Soumettre le commentaire</button>
+
+  <% end %>
 
   <%= image_tag "taz.jpg", alt: "Taz tout content", class: "img-fluid mx-auto d-block mt-5" %>
 </main>

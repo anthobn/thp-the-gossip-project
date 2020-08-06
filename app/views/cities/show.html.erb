@@ -1,0 +1,47 @@
+<main class="container">
+  <h1 class="text-center font-weight-bold text-danger">Consultation Ville</h1>
+  <hr>
+  <h3 class="text-center font-italic">Retrouvez sur cette page le détail de la ville <%= @city.name %></h3>
+  
+  <p class="h5 mt-5 font-italic text-center">Informations sur la ville :</p>
+  <table class="table table-bordered">
+  <thead class="text-center">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Nom</th>
+      <th scope="col">Code postal</th>
+      <th scope="col">Date de création</th>
+      <th scope="col">Date de modification</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" class="text-center"><%= @city.id %></th>
+      <td><%= @city.name%></td>
+      <td class="text-justify"><%= @city.zip_code %></td>
+      <td class="text-center"><%= @city.created_at.to_s %></td>
+      <td class="text-center"><%= @city.updated_at.to_s %></td>
+    </tr>
+  </tbody>
+  </table>
+
+  <p class="h5 mt-5 font-italic text-center">Tous les potins rédigés dans cette ville :</p>
+  <div class="list-group">
+    <% i = 0 %>
+    <% @city.users.each do |user| %>
+      <% user.gossips.each do |gossip| %>
+        
+        <a href="<%= gossip_path(gossip.id) %>" class="list-group-item list-group-item-action <%= 'active' if i%2==0 %>">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1"><%= gossip.title %></h5>
+            <small><%= gossip.created_at %></small>
+          </div>
+          <p class="mb-1"><%= gossip.content %></p>
+          <small>Redigé par : <%= gossip.user.first_name %></small>
+        </a>
+
+        <%i += 1%>
+      <% end %>
+    <% end %>
+  </div>
+</main>
