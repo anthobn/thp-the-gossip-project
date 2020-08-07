@@ -15,7 +15,7 @@ Comment.destroy_all
 end
 
 100.times do |x|
-  user = User.create!(first_name: Faker::Name.first_name, family_name: Faker::Name.last_name, mail: Faker::Internet.email, city_id: City.all.sample.id, description: Faker::Lorem.paragraph_by_chars(number: 20, supplemental: false), age: rand(10..99))
+  user = User.create!(first_name: Faker::Name.first_name, family_name: Faker::Name.last_name, mail: Faker::Internet.email, city_id: City.all.sample.id, description: Faker::Lorem.paragraph_by_chars(number: 20, supplemental: false), age: rand(10..99), password: "strongPass")
 end
 
 200.times do |x|
@@ -26,4 +26,4 @@ end
   comment = Comment.create!(content: Faker::Lorem.paragraph_by_chars(number: 80, supplemental: false), user_id: User.all.sample.id, gossip_id: Gossip.all.sample.id)
 end
 
-User.create!(first_name: 'Anonymous', family_name: 'Anonymous', mail: 'anonymous@anonymous.com', city_id: City.all.sample.id, description: Faker::Lorem.paragraph_by_chars(number: 20, supplemental: false), age: rand(10..99))
+User.create!(first_name: 'Anonymous', family_name: 'Anonymous', mail: 'anonymous@anonymous.com', city_id: City.all.sample.id, description: Faker::Lorem.paragraph_by_chars(number: 20, supplemental: false), age: rand(10..99), password: "strongPass")
