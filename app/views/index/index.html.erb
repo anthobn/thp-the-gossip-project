@@ -4,7 +4,7 @@
   <h3 class="text-center font-italic">Retrouvez sur cette page l'ensemble des rumeurs...</h3>
 </div>
 
-<% if request.params['gossipRegistered'] && request.params['gossipRegistered'] = true %>
+<% if request.params['gossipRegistered'] && request.params['gossipRegistered'] == 'true' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Votre potin a été enregistré avec succès !</p>
@@ -12,7 +12,7 @@
   </div>
 <% end %>
 
-<% if request.params['gossipUpdated'] && request.params['gossipUpdated'] = true %>
+<% if request.params['gossipUpdated'] && request.params['gossipUpdated'] == 'true' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Votre potin a été mis à jour avec succès !</p>
@@ -20,7 +20,7 @@
   </div>
 <% end %>
 
-<% if request.params['gossipDeleted'] && request.params['gossipDeleted'] = true %>
+<% if request.params['gossipDestroyed'] && request.params['gossipDestroyed'] == 'true' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Votre potin a été supprimé avec succès !</p>
@@ -28,7 +28,7 @@
   </div>
 <% end %>
 
-<% if request.params['userRegistered'] && request.params['userRegistered'] = true %>
+<% if request.params['userRegistered'] && request.params['userRegistered'] == 'true' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Votre compte a été crée avec succès !</p>
@@ -36,7 +36,7 @@
   </div>
 <% end %>
 
-<% if request.params['connect'] && request.params['connect'] = true %>
+<% if request.params['connect'] && request.params['connect'] == 'success' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Vous êtes bien connecté !</p>
@@ -44,7 +44,7 @@
   </div>
 <% end %>
 
-<% if request.params['disconnect'] && request.params['disconnect'] = true %>
+<% if request.params['disconnect'] && request.params['disconnect'] == 'success' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Vous êtes bien déconnecté !</p>
@@ -65,7 +65,20 @@
             <a href="<%= user_path(gossip.user_id) %>" class="btn btn-primary">Voir le profil</a>
             <a href="<%= gossip_path(gossip.id) %>" class="btn btn-primary">Voir le potin</a>
           </div>
-          <p class="mt-3 mb-0 text-muted font-italic text-right"><%= gossip.comments.count %> commentaire(s)</p>
+          <div class="d-flex justify-content-between mt-3">
+            <% if current_user.instance_of? User %>
+              <% if gossip.likes.exists?(user_id: current_user.id)%>
+                <a href="<%= like_path(gossip.likes.where(user_id: current_user.id)[0].id) %>" class="btn btn-danger" data-method="DELETE">Unlike</a>
+              <% else %>
+                <%= form_tag likes_path(action: 'create'), method: "post" do %>
+                  <input type="hidden" name="gossip_id" value="<%=gossip.id %>">
+                  <%= submit_tag "Liker", class: "btn btn-success" %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <p class="text-muted font-italic"><%= gossip.likes.count %> like(s)</p>
+            <p class="text-muted font-italic"><%= gossip.comments.count %> commentaire(s)</p>
+          </div>
         </div>
         <div class="card-footer text-muted font-italic">
           Crée le <%= gossip.created_at.to_s %>

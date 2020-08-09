@@ -12,8 +12,8 @@ class GossipsController < ApplicationController
   end
 
   def create
-    anonymous = User.where(mail: 'anonymous@anonymous.com')[0]
-    @gossip = Gossip.new(title: params['title'], content: params['content'], user: anonymous)
+    user = current_user
+    @gossip = Gossip.new(title: params['title'], content: params['content'], user: user)
     
     if @gossip.save
       redirect_to '/?gossipRegistered=true'
@@ -30,17 +30,28 @@ class GossipsController < ApplicationController
   def update
     @gossip = Gossip.find(params[:id])
     
-    if @gossip.update(post_params)
-      redirect_to '/?gossipUpdated=true'
+    if current_user == @gossip.user
+      if @gossip.update(post_params)
+        redirect_to '/?gossipUpdated=true'
+      else
+        render :edit
+      end
     else
-      render :edit
+      redirect_to gossip_path(@gossip.id, gossipUpdated: 'errNotAuthor')
     end
   end
 
   def destroy
     @gossip = Gossip.find(params[:id])
-    @gossip.destroy
-    redirect_to '/?gossipDeleted=true'
+
+    if current_user == @gossip.user
+      @gossip.destroy
+      redirect_to '/?gossipDestroyed=true'
+    else
+      redirect_to gossip_path(@gossip.id, gossipDestroyed: 'errNotAuthor')
+    end
+
+    
   end
 
   private
@@ -51,7 +62,7 @@ class GossipsController < ApplicationController
 
   def authenticate_user
     unless current_user
-      redirect_to new_session_path(err: 'notLogged')
+      redirect_to new_session_path(err: 'notLogged', redirect: 'new_gossip_path')
     end
   end
 

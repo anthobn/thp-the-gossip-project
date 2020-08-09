@@ -7,12 +7,22 @@ class SessionsController < ApplicationController
     user = User.find_by(mail: params['mail'])
 
     if user && user.authenticate(params['password'])
-      session[:user_id] = user.id
-      redirect_to '/?connect=success'
+      log_in(user)
+
+      if params['redirect'] && params['redirect'] == "new_gossip_path"
+        redirect_to new_gossip_path
+      else
+        redirect_to '/?connect=success'
+      end
+
     else
-      flash.now[:danger] = 'Invalid email/password combination'
-      render 'new'
+      if params['redirect']
+        redirect_to new_session_path(err: 'loginError', redirect: params['redirect'])
+      else
+        redirect_to new_session_path(err: 'loginError')
+      end
     end
+      
   end
 
   def destroy

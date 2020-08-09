@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_many :gossips
   belongs_to :city
   has_many :comments
+  has_many :likes, :dependent => :destroy
   has_secure_password
 
   validates :first_name, presence: true

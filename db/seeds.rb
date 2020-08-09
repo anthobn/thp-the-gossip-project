@@ -9,6 +9,7 @@ User.destroy_all
 Gossip.destroy_all
 City.destroy_all
 Comment.destroy_all
+Like.destroy_all
 
 50.times do |x|
   city = City.create!(name: Faker::Address.city, zip_code: rand(10000..70000))

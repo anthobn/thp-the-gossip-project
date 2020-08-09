@@ -3,7 +3,7 @@
   <hr>
   <h3 class="text-center font-italic">Retrouvez sur cette page le détail du potin n°<%= @gossip.id %></h3>
 
-<% if request.params['commentUpdated'] && request.params['commentUpdated'] = true %>
+<% if request.params['commentUpdated'] && request.params['commentUpdated'] == 'true' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Votre commentaire a été mis à jour avec succès !</p>
@@ -11,10 +11,50 @@
   </div>
 <% end %>
 
-<% if request.params['commentDestroyed'] && request.params['commentDestroyed'] = true %>
+<% if request.params['commentDestroyed'] && request.params['commentDestroyed'] == 'true' %>
   <div class="container mt-5">
     <div class="alert alert-success" role="alert">
       <p class="h5 text-center font-weight-bold">Votre commentaire a été supprimé avec succès !</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['commentDestroyed'] && request.params['commentDestroyed'] == 'errNotAuthor' %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre commentaire n'a pas pu être supprimé car seul l'auteur peut effectuer cette opération</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['gossipDestroyed'] && request.params['gossipDestroyed'] == 'errNotAuthor' %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre potin n'a pas pu être supprimé car seul l'auteur peut effectuer cette opération</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['commentUpdated'] && request.params['commentUpdated'] == 'errNotAuthor' %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre commentaire n'a pas pu être modifié car seul l'auteur peut effectuer cette opération</p>
+    </div>
+  </div>
+<% end %>
+  
+<% if request.params['gossipUpdated'] && request.params['gossipUpdated'] == 'errNotAuthor' %>
+  <div class="container mt-5">
+    <div class="alert alert-danger" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre potin n'a pas pu être modifié car seul l'auteur peut effectuer cette opération</p>
+    </div>
+  </div>
+<% end %>
+
+<% if request.params['commentCreated'] && request.params['commentCreated'] == 'true' %>
+  <div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+      <p class="h5 text-center font-weight-bold">Votre commentaire a été crée avec succès !</p>
     </div>
   </div>
 <% end %>
@@ -29,8 +69,10 @@
       <th scope="col">Date de modification</th>
       <th scope="col">Ville de l'auteur</th>
       <th scope="col">Consultation auteur</th>
-      <th scope="col">Modification</th>
-      <th scope="col">Suppression</th>
+      <% if @gossip.user == current_user %>
+        <th scope="col">Modification</th>
+        <th scope="col">Suppression</th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -42,8 +84,10 @@
       <td class="text-center"><%= @gossip.updated_at.to_s %></td>
       <td class="text-center"><a href="<%= city_path(@gossip.user.city.id) %>"><%= @gossip.user.city.name %></a></td>
       <td class="text-center"><a href="<%= user_path(@gossip.user_id) %>" class="btn btn-primary">Voir le profil utilisateur</a></td>
-      <td class="text-center"><a href="<%= edit_gossip_path %>" class="btn btn-primary">Modifier</a></td>
-      <td class="text-center"><a href="<%= gossip_path %>" class="btn btn-danger" data-confirm="Etes-vous sur de vouloir supprimer ce potin ?" data-method="DELETE">Supprimer</a></td>
+      <% if @gossip.user == current_user %>
+        <td class="text-center"><a href="<%= edit_gossip_path %>" class="btn btn-primary">Modifier</a></td>
+        <td class="text-center"><a href="<%= gossip_path %>" class="btn btn-danger" data-confirm="Etes-vous sur de vouloir supprimer ce potin ?" data-method="DELETE">Supprimer</a></td>
+      <% end %>
     </tr>
   </tbody>
   </table>
@@ -62,10 +106,12 @@
           <div>
             <small>Redigé par : <%= comment.user.first_name %></small>
           </div>
-          <div>
-            <a href="<%= edit_comment_path(comment.id) %>" class="btn btn-warning">Modifier</a>
-            <a href="<%= comment_path(comment.id) %>" class="btn btn-danger" data-confirm="Etes-vous sur de vouloir supprimer ce commentaire ?" data-method="DELETE">Supprimer</a>
-          </div>
+          <% if comment.user == current_user %>
+            <div>
+              <a href="<%= edit_comment_path(comment.id) %>" class="btn btn-warning">Modifier</a>
+              <a href="<%= comment_path(comment.id) %>" class="btn btn-danger" data-confirm="Etes-vous sur de vouloir supprimer ce commentaire ?" data-method="DELETE">Supprimer</a>
+            </div>
+          <% end %>
         </div>
       </div>
 
@@ -75,6 +121,8 @@
   </div>
 
   <%= form_for @comment do |f| %>
+
+    <input type="hidden" name="gossip_id" value="<%= @gossip.id %>" />
 
     <div class="form-group">
       <label>Rédiger un commentaire :</label>
