@@ -9,3 +9,7 @@ Cet exercice a été fait dans le cadre de la formation The Hacking Project
 Cet exercice permet de mettre en pratique Ruby on Rails en créant l'application "The Gossip Project". 
 
 Cette application doit permettre de partager des "potins" entre les mousaillons (étudiants participants à la formation) situés dans différentes villes.
+
+## Accès au site
+
+L'application est consultable via HEROKU en [cliquant ici](https://thpthegossipproject.herokuapp.com/)
